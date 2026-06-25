@@ -132,6 +132,10 @@ export function getVisibleState(materia: Materia): EstadoVisible {
     return 'EN_CURSO';
   }
 
+  if (materia.estadoUsuario === 'REGULARIZADA') {
+    return 'REGULARIZADA';
+  }
+
   if (materia.estadoUsuario === 'FINALIZADA') {
     return 'FINALIZADA';
   }
