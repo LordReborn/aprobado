@@ -1,0 +1,526 @@
+import type { Materia, PlanDataset } from '../domain/types';
+import { computeCalculatedStates } from '../domain/rules';
+
+// Plan 2023 - Ingeniería en Sistemas de Información (Ordenanza N° 1878)
+// cursadas = "Para regularizar" | aprobadas = "Cursadas Aprobadas"
+
+const rawDemoMaterias: Materia[] = [
+    {
+      "id": "1",
+      "nombre": "Análisis Matemático 1",
+      "anio": 1,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "2",
+      "nombre": "Álgebra y Geometría Analítica",
+      "anio": 1,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "3",
+      "nombre": "Física 1",
+      "anio": 1,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "4",
+      "nombre": "Inglés 1",
+      "anio": 1,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "5",
+      "nombre": "Lógica y Estructuras Discretas",
+      "anio": 1,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "6",
+      "nombre": "Algoritmos y Estructuras de Datos",
+      "anio": 1,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "7",
+      "nombre": "Arquitectura de Computadoras",
+      "anio": 2,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "8",
+      "nombre": "Sistemas y Procesos de Negocio",
+      "anio": 1,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "9",
+      "nombre": "Análisis Matemático 2",
+      "anio": 2,
+      "cursadas": [
+        "1",
+        "2"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "10",
+      "nombre": "Física 2",
+      "anio": 2,
+      "cursadas": [
+        "1",
+        "3"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "11",
+      "nombre": "Ingeniería y Sociedad",
+      "anio": 1,
+      "cursadas": [],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "DESBLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "12",
+      "nombre": "Inglés 2",
+      "anio": 2,
+      "cursadas": [
+        "4"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "13",
+      "nombre": "Sintaxis y Semántica de los Lenguajes",
+      "anio": 2,
+      "cursadas": [
+        "5",
+        "6"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "14",
+      "nombre": "Paradigmas de Programación",
+      "anio": 2,
+      "cursadas": [
+        "5",
+        "6"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "15",
+      "nombre": "Sistema Operativos",
+      "anio": 3,
+      "cursadas": [
+        "7"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "16",
+      "nombre": "Análisis de Sistemas de Información (integradora)",
+      "anio": 2,
+      "cursadas": [
+        "6",
+        "8"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "17",
+      "nombre": "Probabilidades y Estadísticas",
+      "anio": 2,
+      "cursadas": [
+        "1",
+        "2"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "18",
+      "nombre": "Economía",
+      "anio": 3,
+      "cursadas": [],
+      "aprobadas": [
+        "1",
+        "2"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "19",
+      "nombre": "Bases de Datos",
+      "anio": 3,
+      "cursadas": [
+        "13",
+        "16"
+      ],
+      "aprobadas": [
+        "5",
+        "6"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "20",
+      "nombre": "Desarrollo de Software",
+      "anio": 3,
+      "cursadas": [
+        "14",
+        "16"
+      ],
+      "aprobadas": [
+        "5",
+        "6"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "21",
+      "nombre": "Comunicación de Datos",
+      "anio": 3,
+      "cursadas": [],
+      "aprobadas": [
+        "3",
+        "7"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "22",
+      "nombre": "Análisis Numérico",
+      "anio": 3,
+      "cursadas": [
+        "9"
+      ],
+      "aprobadas": [
+        "1",
+        "2"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "23",
+      "nombre": "Diseño de Sistemas de Información (integradora)",
+      "anio": 3,
+      "cursadas": [
+        "14",
+        "16"
+      ],
+      "aprobadas": [
+        "4",
+        "6",
+        "8"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "24",
+      "nombre": "Legislación",
+      "anio": 4,
+      "cursadas": [
+        "11"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "25",
+      "nombre": "Ingeniería y Calidad de Software",
+      "anio": 4,
+      "cursadas": [
+        "19",
+        "20",
+        "23"
+      ],
+      "aprobadas": [
+        "13",
+        "14"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "26",
+      "nombre": "Redes de Datos",
+      "anio": 4,
+      "cursadas": [
+        "15",
+        "21"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "27",
+      "nombre": "Investigación Operativa",
+      "anio": 4,
+      "cursadas": [
+        "17",
+        "22"
+      ],
+      "aprobadas": [],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "28",
+      "nombre": "Simulación",
+      "anio": 4,
+      "cursadas": [
+        "17"
+      ],
+      "aprobadas": [
+        "9"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "29",
+      "nombre": "Tecnologías para la automatización",
+      "anio": 4,
+      "cursadas": [
+        "10",
+        "22"
+      ],
+      "aprobadas": [
+        "9"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "30",
+      "nombre": "Administración de Sistemas de Información (integradora)",
+      "anio": 4,
+      "cursadas": [
+        "18",
+        "23"
+      ],
+      "aprobadas": [
+        "16"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "31",
+      "nombre": "Inteligencia Artificial",
+      "anio": 5,
+      "cursadas": [
+        "28"
+      ],
+      "aprobadas": [
+        "17",
+        "22"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "32",
+      "nombre": "Ciencia de Datos",
+      "anio": 5,
+      "cursadas": [
+        "28"
+      ],
+      "aprobadas": [
+        "17",
+        "19"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "33",
+      "nombre": "Sistemas de Gestión",
+      "anio": 5,
+      "cursadas": [
+        "18",
+        "27"
+      ],
+      "aprobadas": [
+        "23"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "34",
+      "nombre": "Gestión Gerencial",
+      "anio": 5,
+      "cursadas": [
+        "24",
+        "30"
+      ],
+      "aprobadas": [
+        "18"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "35",
+      "nombre": "Seguridad en los Sistemas de Información",
+      "anio": 5,
+      "cursadas": [
+        "26",
+        "30"
+      ],
+      "aprobadas": [
+        "20",
+        "21"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    },
+    {
+      "id": "36",
+      "nombre": "Proyecto Final (integradora)",
+      "anio": 5,
+      "cursadas": [
+        "25",
+        "26",
+        "30"
+      ],
+      "aprobadas": [
+        "12",
+        "20",
+        "23"
+      ],
+      "estadoUsuario": null,
+      "estadoCalculado": "BLOQUEADA",
+      "tipo": "obligatoria",
+      "activa": true
+    }
+  ]
+
+export const demoMaterias: Materia[] = computeCalculatedStates(rawDemoMaterias);
+
+export const demoPlan: PlanDataset = {
+  materias: demoMaterias,
+  gruposEleccion: [],
+};

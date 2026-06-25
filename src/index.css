@@ -1,0 +1,59 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #111827;
+  background-color: #111827;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-signature {
+  flex-shrink: 0;
+  padding: 0.35rem 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  background-color: #111827;
+  border-top: 1px solid #1f2937;
+}
+
+.app-signature a {
+  color: #e5e7eb;
+  text-decoration: none;
+}
+
+.app-signature a:hover {
+  text-decoration: underline;
+}
+
+a {
+  color: inherit;
+}
+

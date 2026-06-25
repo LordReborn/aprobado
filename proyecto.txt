@@ -1,0 +1,110 @@
+Quiero que generes un proyecto completo en React + TypeScript (sin backend) para una webapp de seguimiento de materias correlativas.
+
+STACK / REGLAS
+- React + TypeScript.
+- Vite como bundler.
+- UI minimal (CSS simple o CSS modules).
+- Persistencia SOLO en localStorage (no backend).
+- No uses Redux; usá React Context + hooks o Zustand (preferible Context para simpleza).
+- Código limpio, tipado estricto, y estructura de carpetas prolija.
+- Agregá scripts y README con instrucciones de correr el proyecto.
+
+FUNCIONALIDAD PRINCIPAL
+La app representa un grafo dirigido de materias:
+- Cada materia es un nodo.
+- Cada correlativa es una arista dirigida: correlativa -> materia.
+- Las materias se agrupan visualmente por año (columnas: Año 1, Año 2, etc).
+- Estados posibles de una materia:
+  - "BLOQUEADA"
+  - "EN_CURSO"
+  - "FINALIZADA"
+
+REGLAS DE NEGOCIO
+- Una materia está BLOQUEADA si tiene al menos una correlativa que NO está FINALIZADA.
+- Si todas sus correlativas están FINALIZADAS, la materia puede estar EN_CURSO o FINALIZADA (según el usuario).
+- El usuario NO puede poner EN_CURSO o FINALIZADA una materia que esté BLOQUEADA. Mostrar un mensaje/tooltip indicando qué correlativas faltan.
+- Cuando cambia el estado de una materia, recalcular automáticamente el “bloqueo/desbloqueo” de todas las materias dependientes.
+- Guardar todo en localStorage y restaurar al abrir la app.
+
+MODELO DE DATOS
+Definí tipos TypeScript:
+- Materia:
+  - id: string
+  - nombre: string
+  - anio: number
+  - correlativas: string[]  (ids de materias requeridas)
+  - estadoUsuario: "EN_CURSO" | "FINALIZADA" | null
+  - estadoCalculado: "BLOQUEADA" | "DESBLOQUEADA"
+  Nota: estado final mostrado se deriva de estadoCalculado + estadoUsuario:
+    - Si estadoCalculado=BLOQUEADA => mostrar BLOQUEADA
+    - Si DESBLOQUEADA y estadoUsuario=null => mostrar DESBLOQUEADA (o “Disponible”)
+    - Si DESBLOQUEADA y estadoUsuario=EN_CURSO => mostrar EN_CURSO
+    - Si DESBLOQUEADA y estadoUsuario=FINALIZADA => mostrar FINALIZADA
+
+PANTALLAS
+1) Mapa de correlativas (principal)
+- Vista tipo tablero con columnas por año.
+- Cada materia como “card”.
+- Conectores visibles entre materias correlativas.
+- Al hacer click en una materia abrir panel lateral (o modal) con:
+  - Nombre, año, estado
+  - Lista de correlativas y su estado
+  - Lista de materias que desbloquea (dependientes)
+  - Botones: “Marcar En curso”, “Marcar Finalizada”, “Reiniciar estado” (a null)
+  - Si está bloqueada, deshabilitar botones y explicar por qué.
+
+2) Editor simple (puede ser dentro de la misma app como pestaña)
+- Permite:
+  - Agregar materia (id autogenerado, nombre, año)
+  - Editar materia
+  - Eliminar materia (con confirmación)
+  - Elegir correlativas mediante multiselect (lista de materias existentes)
+- Botón “Reset a ejemplo” que carga un dataset demo.
+- Botón “Exportar JSON” y “Importar JSON” (import con validación básica, sin backend).
+
+GRAFO / RENDER
+- Usar una librería para grafo en React: preferentemente React Flow.
+- Implementar layout simple por columnas:
+  - x = anio * anchoColumna
+  - y = índice dentro del año * espaciado
+- Conectar con edges desde correlativas -> materia.
+- Estilos:
+  - BLOQUEADA gris
+  - EN_CURSO amarillo/azul
+  - FINALIZADA verde
+  - DESBLOQUEADA neutro
+
+ARQUITECTURA / ESTRUCTURA
+- /src
+  - /domain (types, reglas, funciones puras: cálculo de bloqueo, dependencias, validaciones)
+  - /storage (localStorage repository)
+  - /state (context + reducer o hooks)
+  - /components (UI)
+  - /pages (Mapa, Editor)
+  - /data (dataset demo)
+- Funciones puras testeables:
+  - computeCalculatedStates(materias) -> materias con estadoCalculado
+  - getMissingPrereqs(materia, materias) -> string[]
+  - getDependents(id, materias) -> Materia[]
+- Persistencia:
+  - key: "correlativas_app_v1"
+  - guardar cada cambio con debounce leve (ej 300ms) o inmediato.
+
+CALIDAD
+- Sin errores de TypeScript.
+- Manejo de ciclos: si el usuario crea un ciclo de correlativas, detectarlo y mostrar error en el editor (no permitir guardar).
+- Asegurar integridad: correlativas deben existir; al eliminar una materia, removerla de correlativas de las demás.
+- README explicando reglas y cómo usar/importar/exportar.
+
+ENTREGABLE
+- Generá todo el código del proyecto listo para correr:
+  - package.json
+  - vite config
+  - componentes
+  - estilos
+  - dataset demo
+- Incluir instrucciones para:
+  - npm install
+  - npm run dev
+
+Empezá generando el proyecto y luego los archivos principales con su contenido completo.
