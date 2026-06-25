@@ -147,11 +147,6 @@
     padding: 0.75rem;
   }
 
-  .editor-tab-button {
-    padding: 0.45rem 0.65rem;
-    font-size: 0.8125rem;
-  }
-
   .editor-form-wrapper {
     padding: 0.5rem;
   }
@@ -509,6 +504,39 @@
   gap: 0.5rem;
 }
 
+.editor-tabs-scroll {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.editor-tabs-scroll::before,
+.editor-tabs-scroll::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 1px;
+  width: 1.75rem;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.editor-tabs-scroll::before {
+  left: 0;
+  background: linear-gradient(to right, #ffffff 15%, transparent);
+}
+
+.editor-tabs-scroll::after {
+  right: 0;
+  background: linear-gradient(to left, #ffffff 15%, transparent);
+}
+
+.editor-tabs-scroll--start::before,
+.editor-tabs-scroll--end::after {
+  opacity: 1;
+}
+
 .editor-tabs {
   display: flex;
   gap: 0.25rem;
@@ -516,7 +544,9 @@
   flex-shrink: 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
   scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
 }
 
 .editor-tab-button {
@@ -543,6 +573,55 @@
 .editor-tab-button-active {
   color: #2563eb;
   border-bottom-color: #2563eb;
+}
+
+.editor-tab-label-short {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .editor-tab-button {
+    padding: 0.55rem 0.5rem;
+    font-size: 0.8125rem;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  .editor-tab-label-full {
+    display: none;
+  }
+
+  .editor-tab-label-short {
+    display: inline;
+  }
+
+  .editor-tabs-scroll::before,
+  .editor-tabs-scroll::after {
+    display: none;
+  }
+
+  .editor-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
+    gap: 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .editor-tab-button:nth-child(odd) {
+    border-right: 1px solid #e5e7eb;
+  }
+
+  .editor-tab-button:nth-child(-n + 2) {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .editor-tab-button-active {
+    background-color: #eff6ff;
+  }
 }
 
 .editor-content {

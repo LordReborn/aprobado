@@ -6,6 +6,7 @@ import { useMaterias } from '../state/MateriasContext';
 import { EditorSubjectForm } from '../components/EditorSubjectForm';
 import { ImportMateriasPanel } from '../components/ImportMateriasPanel';
 import { EditorSettingsPanel } from '../components/EditorSettingsPanel';
+import { EditorTabsNav } from '../components/EditorTabsNav';
 import { getEditorSection, paths } from '../routes/paths';
 
 function editorTabClass(isActive: boolean): string {
@@ -144,7 +145,6 @@ export function EditorPage() {
   return (
     <div className="page editor-page">
       <div className="editor-main">
-        <h2>Editor de materias</h2>
 
         {lastError && (
           <div className="alert alert-error">
@@ -155,23 +155,35 @@ export function EditorPage() {
           </div>
         )}
 
-        <nav className="editor-tabs" aria-label="Secciones del editor">
+        <EditorTabsNav>
           <NavLink to={paths.editorList} end className={({ isActive }) => editorTabClass(isActive)}>
             Listado
           </NavLink>
           <NavLink
             to={paths.editorNew}
+            aria-label={formTitle}
             className={({ isActive }) => editorTabClass(isActive || section === 'editar')}
           >
-            {formTitle}
+            <span className="editor-tab-label-full">{formTitle}</span>
+            <span className="editor-tab-label-short">{section === 'editar' ? 'Editar' : 'Nueva'}</span>
           </NavLink>
-          <NavLink to={paths.editorImport} className={({ isActive }) => editorTabClass(isActive)}>
-            Importar JSON
+          <NavLink
+            to={paths.editorImport}
+            aria-label="Importar JSON"
+            className={({ isActive }) => editorTabClass(isActive)}
+          >
+            <span className="editor-tab-label-full">Importar JSON</span>
+            <span className="editor-tab-label-short">Importar</span>
           </NavLink>
-          <NavLink to={paths.editorSettings} className={({ isActive }) => editorTabClass(isActive)}>
-            Configuración
+          <NavLink
+            to={paths.editorSettings}
+            aria-label="Configuración"
+            className={({ isActive }) => editorTabClass(isActive)}
+          >
+            <span className="editor-tab-label-full">Configuración</span>
+            <span className="editor-tab-label-short">Config</span>
           </NavLink>
-        </nav>
+        </EditorTabsNav>
 
         <div className="editor-content">
           <Routes>
