@@ -997,3 +997,48 @@
   align-items: center;
   gap: 0.5rem 0.75rem;
 }
+
+.settings-alias {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9rem;
+  color: #111827;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(17, 24, 39, 0.45);
+}
+
+.modal-dialog {
+  width: min(100%, 24rem);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.modal-message {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
