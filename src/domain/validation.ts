@@ -359,8 +359,12 @@ function normalizeGrupoFromJson(item: unknown, index: number): GrupoEleccion {
   });
 }
 
+function normalizeJsonQuotes(text: string): string {
+  return text.replace(/[\u201C\u201D]/g, '"');
+}
+
 function extractJsonValue(text: string): unknown {
-  const trimmed = text.trim();
+  const trimmed = normalizeJsonQuotes(text).trim();
 
   try {
     return JSON.parse(trimmed);

@@ -55,25 +55,7 @@ export function EditorSettingsPanel({
 
   return (
     <div className="settings-panel">
-      <section className="settings-section settings-section-muted">
-        <h4>Sobre esta página</h4>
-        <p className="settings-desc">
-          Esta herramienta fue hecha sin ánimo de lucro. Si te resulta útil y querés colaborar, podés
-          hacerlo con una donación voluntaria.
-        </p>
-        <div className="settings-alias-row">
-          <span className="settings-desc settings-desc-inline">
-            Alias: <strong className="settings-alias">{DONATION_ALIAS}</strong>
-          </span>
-          <button type="button" className="secondary-button" onClick={handleCopyAlias}>
-            {aliasCopyStatus === 'done'
-              ? 'Alias copiado'
-              : aliasCopyStatus === 'error'
-                ? 'No se pudo copiar'
-                : 'Copiar alias'}
-          </button>
-        </div>
-      </section>
+
 
       <section className="settings-section">
         <h4>Exportar</h4>
@@ -131,6 +113,26 @@ export function EditorSettingsPanel({
         >
           Eliminar todas las materias
         </button>
+      </section>
+
+      <section className="settings-section settings-section-muted">
+        <h4>Sobre esta página</h4>
+        <p className="settings-desc">
+          Esta herramienta fue hecha sin ánimo de lucro. Si te resulta útil y querés colaborar, podés
+          hacerlo con una donación voluntaria.
+        </p>
+        <div className="settings-alias-row">
+          <span className="settings-desc settings-desc-inline">
+            Alias: <strong className="settings-alias">{DONATION_ALIAS}</strong>
+          </span>
+          <button type="button" className="secondary-button" onClick={handleCopyAlias}>
+            {aliasCopyStatus === 'done'
+              ? 'Alias copiado'
+              : aliasCopyStatus === 'error'
+                ? 'No se pudo copiar'
+                : 'Copiar alias'}
+          </button>
+        </div>
       </section>
       <ConfirmModal
         open={pendingAction === 'demo'}
