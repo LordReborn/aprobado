@@ -1,5 +1,10 @@
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: #111827;
@@ -57,3 +62,28 @@ a {
   color: inherit;
 }
 
+.static-home-fallback {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+  color: #111827;
+  line-height: 1.6;
+}
+
+.static-home-fallback h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.75rem;
+}
+
+.static-home-fallback p {
+  margin: 0 0 0.75rem;
+}
+
+.static-home-fallback ul {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.static-home-fallback a {
+  color: #2563eb;
+}

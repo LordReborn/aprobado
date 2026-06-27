@@ -183,9 +183,30 @@
   min-height: 0;
 }
 
+.map-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  min-width: 0;
+}
+
+.app-header-summary {
+  font-weight: 400;
+  color: #9ca3af;
+}
+
 @media (max-width: 768px) {
   .map-page {
     flex-direction: column;
+  }
+
+  .map-body {
+    flex-direction: column;
+  }
+
+  .app-header-summary {
+    display: none;
   }
 
   .map-main {

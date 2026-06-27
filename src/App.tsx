@@ -12,19 +12,33 @@ import { MapPage } from "./pages/MapPage";
 import { EditorPage } from "./pages/EditorPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { TermsOfServicePage } from "./pages/TermsOfServicePage";
-import { paths } from "./routes/paths";
+import { APP_HOME_SUMMARY, APP_NAME, APP_TAGLINE } from './content/site';
+import { paths } from './routes/paths';
 
 function AppLayout() {
   const location = useLocation();
   const isEditor = location.pathname.startsWith(paths.editor);
   const isLegalPage =
     location.pathname === paths.privacy || location.pathname === paths.terms;
+  const isHomePage = location.pathname === paths.map;
 
   return (
     <div className="app-root">
       <header className="app-header">
         <div className="app-header-title">
-          <h1>{isLegalPage ? "Información legal" : "Plan de cursada"}</h1>
+          {isLegalPage ? (
+            <h1>Información legal</h1>
+          ) : (
+            <>
+              <h1>{APP_NAME}</h1>
+              <p className="app-header-subtitle">
+                {APP_TAGLINE}
+                {isHomePage && (
+                  <span className="app-header-summary"> · {APP_HOME_SUMMARY}</span>
+                )}
+              </p>
+            </>
+          )}
         </div>
         {!isLegalPage && (
           <nav className="app-tabs">

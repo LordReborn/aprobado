@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import ReactFlow, {
   Background,
   Controls,
@@ -9,14 +9,14 @@ import ReactFlow, {
   Position,
   getNodesBounds,
   useReactFlow,
-} from 'reactflow';
-import 'reactflow/dist/style.css';
-import type { Materia } from '../domain/types';
-import { isMateriaActiva, isOptativa } from '../domain/materia';
-import { getAllPrereqIds, getVisibleState } from '../domain/rules';
-import { useMaterias } from '../state/MateriasContext';
-import { SubjectDetailsPanel } from '../components/SubjectDetailsPanel';
-import { paths } from '../routes/paths';
+} from "reactflow";
+import "reactflow/dist/style.css";
+import type { Materia } from "../domain/types";
+import { isMateriaActiva, isOptativa } from "../domain/materia";
+import { getAllPrereqIds, getVisibleState } from "../domain/rules";
+import { useMaterias } from "../state/MateriasContext";
+import { SubjectDetailsPanel } from "../components/SubjectDetailsPanel";
+import { paths } from "../routes/paths";
 
 type MateriaNodeData = {
   materia: Materia;
@@ -37,7 +37,9 @@ function getLayoutAnio(materia: Materia, maxObligatoriaAnio: number): number {
   return materia.anio;
 }
 
-function getTranslateExtent(nodes: Node[]): [[number, number], [number, number]] {
+function getTranslateExtent(
+  nodes: Node[],
+): [[number, number], [number, number]] {
   if (nodes.length === 0) {
     return [
       [0, 0],
@@ -48,7 +50,10 @@ function getTranslateExtent(nodes: Node[]): [[number, number], [number, number]]
   const bounds = getNodesBounds(nodes);
   return [
     [bounds.x - MAP_BOUNDS_PADDING, bounds.y - MAP_BOUNDS_PADDING],
-    [bounds.x + bounds.width + MAP_BOUNDS_PADDING, bounds.y + bounds.height + MAP_BOUNDS_PADDING],
+    [
+      bounds.x + bounds.width + MAP_BOUNDS_PADDING,
+      bounds.y + bounds.height + MAP_BOUNDS_PADDING,
+    ],
   ];
 }
 
@@ -129,7 +134,10 @@ function orderMateriasWithinYear(list: Materia[]): Materia[] {
   });
 }
 
-function getFocusedMateriaIds(materias: Materia[], selectedId: string): Set<string> {
+function getFocusedMateriaIds(
+  materias: Materia[],
+  selectedId: string,
+): Set<string> {
   const ids = new Set<string>([selectedId]);
   const selected = materias.find((m) => m.id === selectedId);
   if (!selected) return ids;
@@ -157,8 +165,13 @@ function buildNodesAndEdges(
     ? materias
     : materias.filter((m) => isMateriaActiva(m));
 
-  const focusedIds = focusMode && selectedId ? getFocusedMateriaIds(baseMaterias, selectedId) : null;
-  const visibleMaterias = focusedIds ? baseMaterias.filter((m) => focusedIds.has(m.id)) : baseMaterias;
+  const focusedIds =
+    focusMode && selectedId
+      ? getFocusedMateriaIds(baseMaterias, selectedId)
+      : null;
+  const visibleMaterias = focusedIds
+    ? baseMaterias.filter((m) => focusedIds.has(m.id))
+    : baseMaterias;
 
   const maxObligatoriaAnio = Math.max(
     1,
@@ -166,7 +179,9 @@ function buildNodesAndEdges(
   );
 
   const materiasPorAnio = new Map<number, Materia[]>();
-  const selectedMateria = selectedId ? materias.find((m) => m.id === selectedId) ?? null : null;
+  const selectedMateria = selectedId
+    ? (materias.find((m) => m.id === selectedId) ?? null)
+    : null;
 
   visibleMaterias.forEach((m) => {
     const layoutAnio = getLayoutAnio(m, maxObligatoriaAnio);
@@ -190,27 +205,33 @@ function buildNodesAndEdges(
         const activa = isMateriaActiva(materia);
         const visible = getVisibleState(materia);
 
-        let background = '#f3f4f6';
-        if (!activa) background = '#f9fafb';
-        else if (visible === 'BLOQUEADA') background = '#d1d5db';
-        else if (visible === 'EN_CURSO') background = '#BFDBFE';
-        else if (visible === 'REGULARIZADA') background = '#DDD6FE';
-        else if (visible === 'FINALIZADA') background = '#BBF7D0';
+        let background = "#f3f4f6";
+        if (!activa) background = "#f9fafb";
+        else if (visible === "BLOQUEADA") background = "#d1d5db";
+        else if (visible === "EN_CURSO") background = "#BFDBFE";
+        else if (visible === "REGULARIZADA") background = "#DDD6FE";
+        else if (visible === "FINALIZADA") background = "#BBF7D0";
 
         if (selectedId) {
           if (materia.id === selectedId) {
-            background = '#fdba74';
-          } else if (activa && visible !== 'FINALIZADA') {
-            const isCursadaOfSelected = selectedMateria?.cursadas.includes(materia.id) ?? false;
-            const isAprobadaOfSelected = selectedMateria?.aprobadas.includes(materia.id) ?? false;
+            background = "#fdba74";
+          } else if (activa && visible !== "FINALIZADA") {
+            const isCursadaOfSelected =
+              selectedMateria?.cursadas.includes(materia.id) ?? false;
+            const isAprobadaOfSelected =
+              selectedMateria?.aprobadas.includes(materia.id) ?? false;
             const isDependentOfSelected =
-              materia.cursadas.includes(selectedId) || materia.aprobadas.includes(selectedId);
-            if (isCursadaOfSelected || isAprobadaOfSelected) background = '#fef08a';
-            else if (isDependentOfSelected) background = '#fecaca';
+              materia.cursadas.includes(selectedId) ||
+              materia.aprobadas.includes(selectedId);
+            if (isCursadaOfSelected || isAprobadaOfSelected)
+              background = "#fef08a";
+            else if (isDependentOfSelected) background = "#fecaca";
           }
         }
 
-        const label = isOptativa(materia) ? `⦿ ${materia.nombre}` : materia.nombre;
+        const label = isOptativa(materia)
+          ? `⦿ ${materia.nombre}`
+          : materia.nombre;
 
         nodes.push({
           id: materia.id,
@@ -218,13 +239,15 @@ function buildNodesAndEdges(
           width: NODE_WIDTH,
           height: NODE_HEIGHT,
           data: { materia, label },
-          type: 'default',
+          type: "default",
           draggable: false,
           selectable: true,
           style: {
             padding: 12,
             borderRadius: 8,
-            border: isOptativa(materia) ? '2px dashed #9ca3af' : '1px solid #9ca3af',
+            border: isOptativa(materia)
+              ? "2px dashed #9ca3af"
+              : "1px solid #9ca3af",
             background,
             fontSize: 12,
             minWidth: 200,
@@ -237,7 +260,7 @@ function buildNodesAndEdges(
     });
 
   visibleMaterias.forEach((materia) => {
-    const addEdge = (prereqId: string, tipo: 'cursada' | 'aprobada') => {
+    const addEdge = (prereqId: string, tipo: "cursada" | "aprobada") => {
       if (!visibleIds.has(prereqId)) return;
 
       edges.push({
@@ -247,15 +270,15 @@ function buildNodesAndEdges(
         animated: false,
         interactionWidth: 0,
         style: {
-          stroke: '#9ca3af',
+          stroke: "#9ca3af",
           strokeWidth: 1.5,
-          strokeDasharray: tipo === 'cursada' ? '6 3' : undefined,
+          strokeDasharray: tipo === "cursada" ? "6 3" : undefined,
         },
       });
     };
 
-    materia.cursadas.forEach((id) => addEdge(id, 'cursada'));
-    materia.aprobadas.forEach((id) => addEdge(id, 'aprobada'));
+    materia.cursadas.forEach((id) => addEdge(id, "cursada"));
+    materia.aprobadas.forEach((id) => addEdge(id, "aprobada"));
   });
 
   const highlightedEdges: Edge[] = edges.map((edge) => {
@@ -268,7 +291,7 @@ function buildNodesAndEdges(
         ...edge,
         style: {
           ...edge.style,
-          stroke: '#facc15',
+          stroke: "#facc15",
           strokeWidth: 3,
         },
       };
@@ -279,7 +302,7 @@ function buildNodesAndEdges(
         ...edge,
         style: {
           ...edge.style,
-          stroke: '#ef4444',
+          stroke: "#ef4444",
           strokeWidth: 3,
         },
       };
@@ -301,7 +324,13 @@ function MapPageInner() {
   const hasOptativas = materias.some((m) => isOptativa(m));
 
   const { nodes, edges } = useMemo(
-    () => buildNodesAndEdges(materias, selectedId, focusMode, showInactiveOptativas),
+    () =>
+      buildNodesAndEdges(
+        materias,
+        selectedId,
+        focusMode,
+        showInactiveOptativas,
+      ),
     [materias, selectedId, focusMode, showInactiveOptativas],
   );
 
@@ -314,7 +343,9 @@ function MapPageInner() {
     return () => window.clearTimeout(timer);
   }, [nodes.length, focusMode, showInactiveOptativas, fitView]);
 
-  const selectedMateria = selectedId ? materias.find((m) => m.id === selectedId) ?? null : null;
+  const selectedMateria = selectedId
+    ? (materias.find((m) => m.id === selectedId) ?? null)
+    : null;
 
   if (materias.length === 0) {
     return (
@@ -322,10 +353,13 @@ function MapPageInner() {
         <div className="map-empty-state">
           <h2>Todavía no hay materias en tu plan</h2>
           <p>
-            Importá tu plan de estudios desde un JSON generado con IA, o cargá el plan de ejemplo
-            desde la configuración del editor.
+            Importá tu plan de estudios desde un JSON generado con IA, o cargá
+            el plan de ejemplo desde la configuración del editor.
           </p>
-          <Link to={paths.editorImport} className="primary-button map-empty-state-button">
+          <Link
+            to={paths.editorImport}
+            className="primary-button map-empty-state-button"
+          >
             Importar materias
           </Link>
         </div>
@@ -335,67 +369,75 @@ function MapPageInner() {
 
   return (
     <div className="page map-page">
-      <div className="map-main">
-        <div className="map-toolbar">
-          <label className="map-view-switch">
-            <input
-              type="checkbox"
-              className="map-view-switch-input"
-              checked={focusMode}
-              onChange={(e) => {
-                if (!e.target.checked) setSelectedId(null);
-                setFocusMode(e.target.checked);
-              }}
-            />
-            <span className="map-view-switch-track" aria-hidden="true" />
-            <span className="map-view-switch-label">Solo materias relacionadas</span>
-          </label>
-          {hasOptativas && (
+      <div className="map-body">
+        <div className="map-main">
+          <div className="map-toolbar">
             <label className="map-view-switch">
               <input
                 type="checkbox"
                 className="map-view-switch-input"
-                checked={showInactiveOptativas}
-                onChange={(e) => setShowInactiveOptativas(e.target.checked)}
+                checked={focusMode}
+                onChange={(e) => {
+                  if (!e.target.checked) setSelectedId(null);
+                  setFocusMode(e.target.checked);
+                }}
               />
               <span className="map-view-switch-track" aria-hidden="true" />
-              <span className="map-view-switch-label">Mostrar optativas inactivas</span>
+              <span className="map-view-switch-label">
+                Solo materias relacionadas
+              </span>
             </label>
-          )}
+            {hasOptativas && (
+              <label className="map-view-switch">
+                <input
+                  type="checkbox"
+                  className="map-view-switch-input"
+                  checked={showInactiveOptativas}
+                  onChange={(e) => setShowInactiveOptativas(e.target.checked)}
+                />
+                <span className="map-view-switch-track" aria-hidden="true" />
+                <span className="map-view-switch-label">
+                  Mostrar optativas inactivas
+                </span>
+              </label>
+            )}
+          </div>
+
+          <div className="map-container">
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              nodesDraggable={false}
+              nodesConnectable={false}
+              edgesFocusable={false}
+              elementsSelectable={false}
+              panOnDrag
+              zoomOnPinch
+              preventScrolling
+              autoPanOnNodeDrag={false}
+              translateExtent={translateExtent}
+              minZoom={0.55}
+              maxZoom={1.75}
+              onNodeClick={(_, node) => setSelectedId(node.id)}
+            >
+              <Background gap={24} size={1} color="#e5e7eb" />
+              <Controls />
+            </ReactFlow>
+          </div>
         </div>
 
-        <div className="map-container">
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            nodesDraggable={false}
-            nodesConnectable={false}
-            edgesFocusable={false}
-            elementsSelectable={false}
-            panOnDrag
-            zoomOnPinch
-            preventScrolling
-            autoPanOnNodeDrag={false}
-            translateExtent={translateExtent}
-            minZoom={0.55}
-            maxZoom={1.75}
-            onNodeClick={(_, node) => setSelectedId(node.id)}
-          >
-            <Background gap={24} size={1} color="#e5e7eb" />
-            <Controls />
-          </ReactFlow>
-        </div>
+        {selectedMateria && (
+          <SubjectDetailsPanel
+            materia={selectedMateria}
+            materias={materias}
+            gruposEleccion={gruposEleccion}
+            onClose={() => setSelectedId(null)}
+            onChangeEstado={(estado) =>
+              setEstadoUsuario(selectedMateria.id, estado)
+            }
+          />
+        )}
       </div>
-
-      {selectedMateria && (
-        <SubjectDetailsPanel
-          materia={selectedMateria}
-          materias={materias}
-          gruposEleccion={gruposEleccion}
-          onClose={() => setSelectedId(null)}
-          onChangeEstado={(estado) => setEstadoUsuario(selectedMateria.id, estado)}
-        />
-      )}
     </div>
   );
 }
