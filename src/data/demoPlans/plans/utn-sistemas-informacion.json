@@ -1,10 +1,5 @@
-import type { Materia, PlanDataset } from '../domain/types';
-import { computeCalculatedStates } from '../domain/rules';
-
-// Plan 2023 - Ingeniería en Sistemas de Información (Ordenanza N° 1878)
-// cursadas = "Para regularizar" | aprobadas = "Cursadas Aprobadas"
-
-const rawDemoMaterias: Materia[] = [
+{
+  "materias": [
     {
       "id": "1",
       "nombre": "Análisis Matemático 1",
@@ -12,7 +7,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -23,7 +17,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -34,7 +27,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -45,7 +37,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -56,7 +47,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -67,7 +57,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -78,7 +67,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -89,7 +77,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -103,7 +90,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -117,7 +103,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -128,7 +113,6 @@ const rawDemoMaterias: Materia[] = [
       "cursadas": [],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "DESBLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -141,7 +125,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -155,7 +138,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -169,7 +151,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -182,7 +163,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -196,7 +176,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -210,7 +189,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -224,7 +202,6 @@ const rawDemoMaterias: Materia[] = [
         "2"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -241,7 +218,6 @@ const rawDemoMaterias: Materia[] = [
         "6"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -258,7 +234,6 @@ const rawDemoMaterias: Materia[] = [
         "6"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -272,7 +247,6 @@ const rawDemoMaterias: Materia[] = [
         "7"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -288,7 +262,6 @@ const rawDemoMaterias: Materia[] = [
         "2"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -306,7 +279,6 @@ const rawDemoMaterias: Materia[] = [
         "8"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -319,7 +291,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -337,7 +308,6 @@ const rawDemoMaterias: Materia[] = [
         "14"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -351,7 +321,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -365,7 +334,6 @@ const rawDemoMaterias: Materia[] = [
       ],
       "aprobadas": [],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -380,7 +348,6 @@ const rawDemoMaterias: Materia[] = [
         "9"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -396,7 +363,6 @@ const rawDemoMaterias: Materia[] = [
         "9"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -412,7 +378,6 @@ const rawDemoMaterias: Materia[] = [
         "16"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -428,7 +393,6 @@ const rawDemoMaterias: Materia[] = [
         "22"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -444,7 +408,6 @@ const rawDemoMaterias: Materia[] = [
         "19"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -460,7 +423,6 @@ const rawDemoMaterias: Materia[] = [
         "23"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -476,7 +438,6 @@ const rawDemoMaterias: Materia[] = [
         "18"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -493,7 +454,6 @@ const rawDemoMaterias: Materia[] = [
         "21"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     },
@@ -512,15 +472,9 @@ const rawDemoMaterias: Materia[] = [
         "23"
       ],
       "estadoUsuario": null,
-      "estadoCalculado": "BLOQUEADA",
       "tipo": "obligatoria",
       "activa": true
     }
-  ]
-
-export const demoMaterias: Materia[] = computeCalculatedStates(rawDemoMaterias);
-
-export const demoPlan: PlanDataset = {
-  materias: demoMaterias,
-  gruposEleccion: [],
-};
+  ],
+  "gruposEleccion": []
+}

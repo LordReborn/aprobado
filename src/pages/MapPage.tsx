@@ -353,8 +353,7 @@ function MapPageInner() {
         <div className="map-empty-state">
           <h2>Todavía no hay materias en tu plan</h2>
           <p>
-            Importá tu plan de estudios desde un JSON generado con IA, o cargá
-            el plan de ejemplo desde la configuración del editor.
+            Importá tu plan de estudios con IA o elegí un plan de demo UTN desde Importar.
           </p>
           <Link
             to={paths.editorImport}

@@ -8,6 +8,7 @@ import { ImportMateriasPanel } from '../components/ImportMateriasPanel';
 import { EditorSettingsPanel } from '../components/EditorSettingsPanel';
 import { EditorTabsNav } from '../components/EditorTabsNav';
 import { getEditorSection, paths } from '../routes/paths';
+import type { DemoPlanId } from '../data/demoPlans/catalog';
 
 function editorTabClass(isActive: boolean): string {
   return isActive ? 'editor-tab-button editor-tab-button-active' : 'editor-tab-button';
@@ -118,9 +119,9 @@ export function EditorPage() {
     }
   };
 
-  const handleLoadDemo = () => {
-    resetToDemo();
-    navigate(paths.editorList);
+  const handleLoadDemo = (planId: DemoPlanId) => {
+    resetToDemo(planId);
+    navigate(paths.map);
   };
 
   const handleResetEstados = () => {
@@ -299,7 +300,11 @@ export function EditorPage() {
             <Route
               path="importar"
               element={
-                <ImportMateriasPanel onClose={() => navigate(paths.editorList)} onImport={handleImport} />
+                <ImportMateriasPanel
+                  onClose={() => navigate(paths.editorList)}
+                  onImport={handleImport}
+                  onLoadDemo={handleLoadDemo}
+                />
               }
             />
             <Route
@@ -308,7 +313,6 @@ export function EditorPage() {
                 <EditorSettingsPanel
                   materiaCount={materias.length}
                   onExport={handleExport}
-                  onLoadDemo={handleLoadDemo}
                   onResetEstados={handleResetEstados}
                   onClearAll={handleClearAll}
                 />

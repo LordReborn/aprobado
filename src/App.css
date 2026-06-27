@@ -994,6 +994,20 @@
   line-height: 1.45;
 }
 
+.import-step-divider {
+  padding-top: 0.25rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.import-demo-actions {
+  margin-top: 0.75rem;
+}
+
+.import-demo-unavailable {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
 .import-prompt-preview {
   margin-top: 0.75rem;
 }
@@ -1142,6 +1156,106 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.settings-demo-button {
+  margin-top: 0.75rem;
+}
+
+.settings-desc-spaced {
+  margin-top: 0.65rem;
+}
+
+.demo-plan-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.demo-plan-picker-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.demo-plan-picker-control {
+  position: relative;
+}
+
+.demo-plan-picker-input {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #111827;
+  background-color: #ffffff;
+}
+
+.demo-plan-picker-input:focus {
+  outline: 2px solid #93c5fd;
+  outline-offset: 1px;
+  border-color: #60a5fa;
+}
+
+.demo-plan-picker-list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  right: 0;
+  max-height: 14rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+}
+
+.demo-plan-picker-option {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.55rem 0.65rem;
+  border: none;
+  border-radius: 0.375rem;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.demo-plan-picker-option:hover:not(:disabled) {
+  background-color: #f3f4f6;
+}
+
+.demo-plan-picker-option-selected {
+  background-color: #eff6ff;
+}
+
+.demo-plan-picker-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.demo-plan-picker-option-label {
+  font-size: 0.88rem;
+  color: #111827;
+}
+
+.demo-plan-picker-option-note {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.demo-plan-picker-empty {
+  padding: 0.65rem;
+  font-size: 0.85rem;
+  color: #6b7280;
 }
 
 .settings-status {

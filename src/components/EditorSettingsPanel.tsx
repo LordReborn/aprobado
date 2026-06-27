@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { ConfirmModal } from "./ConfirmModal";
-import { copyTextToClipboardAsync } from "../utils/copyToClipboard";
 import { useGoogleSync } from "../state/GoogleSyncContext";
-
-const DONATION_ALIAS = "5.pesos";
 
 function formatLastSynced(date: Date | null): string | null {
   if (!date) {
@@ -16,12 +13,11 @@ function formatLastSynced(date: Date | null): string | null {
   }).format(date);
 }
 
-type PendingAction = "demo" | "resetEstados" | "clear" | null;
+type PendingAction = "resetEstados" | "clear" | null;
 
 interface EditorSettingsPanelProps {
   materiaCount: number;
   onExport: () => void;
-  onLoadDemo: () => void;
   onResetEstados: () => void;
   onClearAll: () => void;
 }
@@ -29,7 +25,6 @@ interface EditorSettingsPanelProps {
 export function EditorSettingsPanel({
   materiaCount,
   onExport,
-  onLoadDemo,
   onResetEstados,
   onClearAll,
 }: EditorSettingsPanelProps) {
@@ -37,9 +32,6 @@ export function EditorSettingsPanel({
   const [exportStatus, setExportStatus] = useState<"idle" | "done" | "error">(
     "idle",
   );
-  const [aliasCopyStatus, setAliasCopyStatus] = useState<
-    "idle" | "done" | "error"
-  >("idle");
   const [cloudActionStatus, setCloudActionStatus] = useState<
     "idle" | "done" | "error"
   >("idle");
@@ -68,16 +60,8 @@ export function EditorSettingsPanel({
     }
   };
 
-  const handleCopyAlias = async () => {
-    const result = await copyTextToClipboardAsync(DONATION_ALIAS);
-    setAliasCopyStatus(result === "copied" ? "done" : "error");
-    window.setTimeout(() => setAliasCopyStatus("idle"), 2000);
-  };
-
   const handleConfirm = () => {
-    if (pendingAction === "demo") {
-      onLoadDemo();
-    } else if (pendingAction === "resetEstados") {
+    if (pendingAction === "resetEstados") {
       onResetEstados();
     } else if (pendingAction === "clear") {
       onClearAll();
@@ -198,21 +182,6 @@ export function EditorSettingsPanel({
       </section>
 
       <section className="settings-section">
-        <h4>Plan de demo</h4>
-        <p className="settings-desc">
-          Carga el plan de Sistemas 2023 de la UTN incluido por defecto. Se
-          reemplaza tu plan actual y se perderá el progreso guardado.
-        </p>
-        <button
-          type="button"
-          className="secondary-button"
-          onClick={() => setPendingAction("demo")}
-        >
-          Utilizar plan de demo
-        </button>
-      </section>
-
-      <section className="settings-section">
         <h4>Restablecer progreso</h4>
         <p className="settings-desc">
           Deja todas las materias sin marcar (ni cursando, ni regularizada ni
@@ -263,16 +232,6 @@ export function EditorSettingsPanel({
           </button>
         </div>
       </section> */}
-      <ConfirmModal
-        open={pendingAction === "demo"}
-        title="¿Utilizar el plan de demo?"
-        message="Se cargará el plan de Sistemas 2023 de la UTN y se reemplazará tu plan actual. Esta acción no se puede deshacer."
-        confirmLabel="Utilizar demo"
-        danger
-        onConfirm={handleConfirm}
-        onCancel={() => setPendingAction(null)}
-      />
-
       <ConfirmModal
         open={pendingAction === "resetEstados"}
         title="¿Restablecer estados iniciales?"

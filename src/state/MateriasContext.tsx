@@ -13,7 +13,11 @@ import { isOptativa } from '../domain/materia';
 import { computeCalculatedStates } from '../domain/rules';
 import { parseMateriasJson, validateDataset } from '../domain/validation';
 import { loadPlanFromStorage, savePlanToStorage } from '../storage/localStorageRepository';
-import { demoPlan } from '../data/demoMaterias';
+import {
+  DEFAULT_DEMO_PLAN_ID,
+  getDemoPlan,
+  type DemoPlanId,
+} from '../data/demoPlans/catalog';
 
 interface MateriasContextValue {
   materias: Materia[];
@@ -24,7 +28,7 @@ interface MateriasContextValue {
   setOptativaActiva: (id: string, activa: boolean) => void;
   replaceAllMaterias: (materias: Materia[]) => void;
   replacePlan: (plan: PlanDataset) => void;
-  resetToDemo: () => void;
+  resetToDemo: (planId?: DemoPlanId) => void;
   resetEstadosIniciales: () => void;
   clearAllMaterias: () => void;
   importFromJson: (json: string) => void;
@@ -172,9 +176,14 @@ export function MateriasProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const resetToDemo = useCallback(() => {
-    setLastError(null);
-    setPlan(demoPlan);
+  const resetToDemo = useCallback((planId: DemoPlanId = DEFAULT_DEMO_PLAN_ID) => {
+    try {
+      setLastError(null);
+      setPlan(getDemoPlan(planId));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'No se pudo cargar el plan de demo.';
+      setLastError(message);
+    }
   }, []);
 
   const resetEstadosIniciales = useCallback(() => {

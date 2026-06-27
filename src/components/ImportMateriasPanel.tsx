@@ -1,6 +1,13 @@
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ConfirmModal } from './ConfirmModal';
+import { DemoPlanPicker, DEFAULT_DEMO_PLAN_ID } from './DemoPlanPicker';
 import { MATERIAS_IMPORT_PROMPT } from '../data/materiasImportPrompt';
+import {
+  getDemoPlanEntry,
+  isDemoPlanAvailable,
+  type DemoPlanId,
+} from '../data/demoPlans/catalog';
 import { validateMateriasJson } from '../domain/validation';
 import { paths } from '../routes/paths';
 import {
@@ -12,17 +19,24 @@ import {
 interface ImportMateriasPanelProps {
   onClose: () => void;
   onImport: (json: string) => void;
+  onLoadDemo: (planId: DemoPlanId) => void;
 }
 
-export function ImportMateriasPanel({ onClose, onImport }: ImportMateriasPanelProps) {
+export function ImportMateriasPanel({ onClose, onImport, onLoadDemo }: ImportMateriasPanelProps) {
   const [jsonText, setJsonText] = useState('');
   const [copyStatus, setCopyStatus] = useState<'idle' | CopyResult>('idle');
+  const [selectedDemoPlanId, setSelectedDemoPlanId] =
+    useState<DemoPlanId>(DEFAULT_DEMO_PLAN_ID);
+  const [pendingDemo, setPendingDemo] = useState(false);
   const promptRef = useRef<HTMLTextAreaElement>(null);
 
   const validation = useMemo(
     () => (jsonText.trim() ? validateMateriasJson(jsonText) : null),
     [jsonText],
   );
+
+  const selectedDemoPlan = getDemoPlanEntry(selectedDemoPlanId);
+  const canLoadSelectedDemo = isDemoPlanAvailable(selectedDemoPlanId);
 
   const handleCopyPrompt = () => {
     const textarea = promptRef.current;
@@ -50,6 +64,11 @@ export function ImportMateriasPanel({ onClose, onImport }: ImportMateriasPanelPr
     onClose();
   };
 
+  const handleConfirmDemo = () => {
+    onLoadDemo(selectedDemoPlanId);
+    setPendingDemo(false);
+  };
+
   const copyButtonLabel =
     copyStatus === 'idle' ? 'Copiar prompt para IA' : copyResultMessage(copyStatus);
 
@@ -63,6 +82,37 @@ export function ImportMateriasPanel({ onClose, onImport }: ImportMateriasPanelPr
         </Link>{' '}
         y volvé a importarlo allí.
       </div>
+
+      <section className="import-step">
+        <h4>Empezá con un plan UTN</h4>
+        <p className="import-step-desc">
+          Elegí una carrera y cargá un plan de ejemplo ya armado. Podés cambiarlo después desde el
+          editor.
+        </p>
+        <DemoPlanPicker value={selectedDemoPlanId} onChange={setSelectedDemoPlanId} />
+        <div className="import-demo-actions">
+          <button
+            type="button"
+            className="primary-button"
+            disabled={!canLoadSelectedDemo}
+            onClick={() => setPendingDemo(true)}
+          >
+            Cargar plan de demo
+          </button>
+        </div>
+        {!canLoadSelectedDemo && (
+          <p className="import-step-desc import-demo-unavailable">
+            Este plan todavía no tiene materias cargadas.
+          </p>
+        )}
+      </section>
+
+      <section className="import-step import-step-divider">
+        <h4>O importá tu propio plan con IA</h4>
+        <p className="import-step-desc">
+          Si tu carrera no está en la lista, generá el JSON con ChatGPT, Claude o Gemini.
+        </p>
+      </section>
 
       <section className="import-step">
         <h4>1. Generá el JSON con una IA</h4>
@@ -140,6 +190,16 @@ export function ImportMateriasPanel({ onClose, onImport }: ImportMateriasPanelPr
           Cancelar
         </button>
       </div>
+
+      <ConfirmModal
+        open={pendingDemo}
+        title="¿Cargar plan de demo?"
+        message={`Se cargará «${selectedDemoPlan.label}» y se reemplazará tu plan actual. Esta acción no se puede deshacer.`}
+        confirmLabel="Cargar plan"
+        danger
+        onConfirm={handleConfirmDemo}
+        onCancel={() => setPendingDemo(false)}
+      />
     </div>
   );
 }
