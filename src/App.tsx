@@ -14,6 +14,7 @@ import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { TermsOfServicePage } from "./pages/TermsOfServicePage";
 import { AboutPage } from "./pages/AboutPage";
 import { AppSiteFooter } from "./components/AppSiteFooter";
+import { AppPurposeModalGate } from "./components/AppPurposeModal";
 import { APP_NAME, APP_TAGLINE } from "./content/site";
 import { paths } from "./routes/paths";
 
@@ -73,6 +74,7 @@ function AppLayout() {
         </Routes>
       </main>
 
+      {isHomePage && <AppPurposeModalGate />}
       <AppSiteFooter />
     </div>
   );
