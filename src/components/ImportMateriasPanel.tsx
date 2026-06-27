@@ -1,20 +1,20 @@
-import { useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ConfirmModal } from './ConfirmModal';
-import { DemoPlanPicker, DEFAULT_DEMO_PLAN_ID } from './DemoPlanPicker';
-import { MATERIAS_IMPORT_PROMPT } from '../data/materiasImportPrompt';
+import { useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { ConfirmModal } from "./ConfirmModal";
+import { DemoPlanPicker, DEFAULT_DEMO_PLAN_ID } from "./DemoPlanPicker";
+import { MATERIAS_IMPORT_PROMPT } from "../data/materiasImportPrompt";
 import {
   getDemoPlanEntry,
   isDemoPlanAvailable,
   type DemoPlanId,
-} from '../data/demoPlans/catalog';
-import { validateMateriasJson } from '../domain/validation';
-import { paths } from '../routes/paths';
+} from "../data/demoPlans/catalog";
+import { validateMateriasJson } from "../domain/validation";
+import { paths } from "../routes/paths";
 import {
   copyFromTextarea,
   copyResultMessage,
   type CopyResult,
-} from '../utils/copyToClipboard';
+} from "../utils/copyToClipboard";
 
 interface ImportMateriasPanelProps {
   onClose: () => void;
@@ -22,9 +22,13 @@ interface ImportMateriasPanelProps {
   onLoadDemo: (planId: DemoPlanId) => void;
 }
 
-export function ImportMateriasPanel({ onClose, onImport, onLoadDemo }: ImportMateriasPanelProps) {
-  const [jsonText, setJsonText] = useState('');
-  const [copyStatus, setCopyStatus] = useState<'idle' | CopyResult>('idle');
+export function ImportMateriasPanel({
+  onClose,
+  onImport,
+  onLoadDemo,
+}: ImportMateriasPanelProps) {
+  const [jsonText, setJsonText] = useState("");
+  const [copyStatus, setCopyStatus] = useState<"idle" | CopyResult>("idle");
   const [selectedDemoPlanId, setSelectedDemoPlanId] =
     useState<DemoPlanId>(DEFAULT_DEMO_PLAN_ID);
   const [pendingDemo, setPendingDemo] = useState(false);
@@ -44,11 +48,16 @@ export function ImportMateriasPanel({ onClose, onImport, onLoadDemo }: ImportMat
 
     void copyFromTextarea(textarea).then((result) => {
       setCopyStatus(result);
-      window.setTimeout(() => setCopyStatus('idle'), result === 'selected' ? 4000 : 2500);
+      window.setTimeout(
+        () => setCopyStatus("idle"),
+        result === "selected" ? 4000 : 2500,
+      );
     });
   };
 
-  const handleSelectPrompt = (event: React.SyntheticEvent<HTMLTextAreaElement>) => {
+  const handleSelectPrompt = (
+    event: React.SyntheticEvent<HTMLTextAreaElement>,
+  ) => {
     event.currentTarget.select();
   };
 
@@ -70,26 +79,31 @@ export function ImportMateriasPanel({ onClose, onImport, onLoadDemo }: ImportMat
   };
 
   const copyButtonLabel =
-    copyStatus === 'idle' ? 'Copiar prompt para IA' : copyResultMessage(copyStatus);
+    copyStatus === "idle"
+      ? "Copiar prompt para IA"
+      : copyResultMessage(copyStatus);
 
   return (
     <div className="import-panel">
       <div className="alert alert-info">
-        Tu plan queda guardado solo en este dispositivo. Si querés usarlo en otro celular o
-        computadora,{' '}
+        Tu plan se guarda en este dispositivo. Para usarlo en otro celular o
+        computadora,{" "}
         <Link to={paths.editorSettings} className="alert-link">
-          exportalo desde Configuración
-        </Link>{' '}
-        y volvé a importarlo allí.
+          conectá Google Drive desde Configuración
+        </Link>{" "}
+        o exportá el JSON e importalo en el otro dispositivo.
       </div>
 
       <section className="import-step">
-        <h4>Empezá con un plan UTN</h4>
+        <h4>Empezá con un plan precargado</h4>
         <p className="import-step-desc">
-          Elegí una carrera y cargá un plan de ejemplo ya armado. Podés cambiarlo después desde el
+          Elegí un plan de ejemplo ya armado. Podés cambiarlo después desde el
           editor.
         </p>
-        <DemoPlanPicker value={selectedDemoPlanId} onChange={setSelectedDemoPlanId} />
+        <DemoPlanPicker
+          value={selectedDemoPlanId}
+          onChange={setSelectedDemoPlanId}
+        />
         <div className="import-demo-actions">
           <button
             type="button"
@@ -97,7 +111,7 @@ export function ImportMateriasPanel({ onClose, onImport, onLoadDemo }: ImportMat
             disabled={!canLoadSelectedDemo}
             onClick={() => setPendingDemo(true)}
           >
-            Cargar plan de demo
+            Cargar plan
           </button>
         </div>
         {!canLoadSelectedDemo && (
@@ -110,15 +124,16 @@ export function ImportMateriasPanel({ onClose, onImport, onLoadDemo }: ImportMat
       <section className="import-step import-step-divider">
         <h4>O importá tu propio plan con IA</h4>
         <p className="import-step-desc">
-          Si tu carrera no está en la lista, generá el JSON con ChatGPT, Claude o Gemini.
+          Si tu carrera no está en la lista, generá el JSON con ChatGPT, Claude
+          o Gemini.
         </p>
       </section>
 
       <section className="import-step">
         <h4>1. Generá el JSON con una IA</h4>
         <p className="import-step-desc">
-          Copiá el prompt, pegalo en ChatGPT/Claude/Gemini junto con tu plan de estudios (PDF o
-          tabla), y pedile que devuelva solo el array JSON.
+          Copiá el prompt, pegalo en ChatGPT/Claude/Gemini junto con tu plan de
+          estudios (PDF o tabla), y pedile que devuelva solo el array JSON.
         </p>
         <textarea
           ref={promptRef}
@@ -132,10 +147,14 @@ export function ImportMateriasPanel({ onClose, onImport, onLoadDemo }: ImportMat
           onClick={handleSelectPrompt}
         />
         <div className="import-prompt-actions">
-          <button type="button" className="primary-button" onClick={handleCopyPrompt}>
+          <button
+            type="button"
+            className="primary-button"
+            onClick={handleCopyPrompt}
+          >
             {copyButtonLabel}
           </button>
-          {copyStatus === 'selected' && (
+          {copyStatus === "selected" && (
             <p className="import-step-desc import-prompt-hint">
               En Safari: mantené pulsado el texto de arriba y elegí Copiar.
             </p>
@@ -161,12 +180,16 @@ export function ImportMateriasPanel({ onClose, onImport, onLoadDemo }: ImportMat
           {validation.ok ? (
             <div className="alert alert-success">
               JSON válido: {validation.materiaCount} materias
-              {validation.grupoCount > 0 ? `, ${validation.grupoCount} grupos de elección` : ''} listas para
-              importar.
+              {validation.grupoCount > 0
+                ? `, ${validation.grupoCount} grupos de elección`
+                : ""}{" "}
+              listas para importar.
             </div>
           ) : (
             <div className="alert alert-error">
-              <strong>Se encontraron {validation.errors.length} error(es):</strong>
+              <strong>
+                Se encontraron {validation.errors.length} error(es):
+              </strong>
               <ul className="import-error-list">
                 {validation.errors.map((error) => (
                   <li key={error}>{error}</li>
