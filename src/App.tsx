@@ -1,5 +1,6 @@
 import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
+import { GoogleSyncProvider } from './state/GoogleSyncContext';
 import { MateriasProvider } from './state/MateriasContext';
 import { MapPage } from './pages/MapPage';
 import { EditorPage } from './pages/EditorPage';
@@ -46,7 +47,9 @@ function AppLayout() {
 function App() {
   return (
     <MateriasProvider>
-      <AppLayout />
+      <GoogleSyncProvider>
+        <AppLayout />
+      </GoogleSyncProvider>
     </MateriasProvider>
   );
 }

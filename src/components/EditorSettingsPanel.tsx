@@ -1,8 +1,20 @@
 import { useState } from 'react';
 import { ConfirmModal } from './ConfirmModal';
 import { copyTextToClipboardAsync } from '../utils/copyToClipboard';
+import { useGoogleSync } from '../state/GoogleSyncContext';
 
 const DONATION_ALIAS = '5.pesos';
+
+function formatLastSynced(date: Date | null): string | null {
+  if (!date) {
+    return null;
+  }
+
+  return new Intl.DateTimeFormat('es-AR', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  }).format(date);
+}
 
 type PendingAction = 'demo' | 'resetEstados' | 'clear' | null;
 
@@ -24,6 +36,20 @@ export function EditorSettingsPanel({
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [exportStatus, setExportStatus] = useState<'idle' | 'done' | 'error'>('idle');
   const [aliasCopyStatus, setAliasCopyStatus] = useState<'idle' | 'done' | 'error'>('idle');
+  const [cloudActionStatus, setCloudActionStatus] = useState<'idle' | 'done' | 'error'>('idle');
+  const {
+    isConfigured: isGoogleConfigured,
+    isConnected: isGoogleConnected,
+    isSyncing: isGoogleSyncing,
+    lastSyncedAt,
+    syncError: googleSyncError,
+    connect: connectGoogle,
+    disconnect: disconnectGoogle,
+    syncNow: syncGoogleNow,
+    loadFromCloud: loadGooglePlan,
+  } = useGoogleSync();
+
+  const lastSyncedLabel = formatLastSynced(lastSyncedAt);
 
   const handleExport = async () => {
     try {
@@ -53,9 +79,75 @@ export function EditorSettingsPanel({
     setPendingAction(null);
   };
 
+  const runCloudAction = async (action: () => Promise<void>) => {
+    try {
+      await action();
+      setCloudActionStatus('done');
+      window.setTimeout(() => setCloudActionStatus('idle'), 2000);
+    } catch {
+      setCloudActionStatus('error');
+      window.setTimeout(() => setCloudActionStatus('idle'), 2500);
+    }
+  };
+
   return (
     <div className="settings-panel">
 
+      <section className="settings-section">
+        <h4>Sincronización con Google</h4>
+        {!isGoogleConfigured ? (
+          <p className="settings-desc">
+            Para guardar tu plan en Google Drive, configurá la variable{' '}
+            <code className="settings-inline-code">VITE_GOOGLE_CLIENT_ID</code> en un archivo{' '}
+            <code className="settings-inline-code">.env</code> con el Client ID de OAuth de Google
+            Cloud.
+          </p>
+        ) : isGoogleConnected ? (
+          <>
+            <p className="settings-desc">
+              Tu plan se guarda automáticamente en tu cuenta de Google (carpeta privada de la app).
+              {lastSyncedLabel ? ` Última sincronización: ${lastSyncedLabel}.` : ''}
+            </p>
+            {googleSyncError && <p className="settings-status settings-status-error">{googleSyncError}</p>}
+            {isGoogleSyncing && <p className="settings-status">Sincronizando…</p>}
+            {cloudActionStatus === 'done' && (
+              <p className="settings-status settings-status-success">Acción completada.</p>
+            )}
+            <div className="settings-action-row">
+              <button
+                type="button"
+                className="secondary-button"
+                disabled={isGoogleSyncing}
+                onClick={() => void runCloudAction(syncGoogleNow)}
+              >
+                Sincronizar ahora
+              </button>
+              <button
+                type="button"
+                className="secondary-button"
+                disabled={isGoogleSyncing}
+                onClick={() => void runCloudAction(loadGooglePlan)}
+              >
+                Cargar desde Google
+              </button>
+              <button type="button" className="secondary-button" onClick={disconnectGoogle}>
+                Desconectar
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="settings-desc">
+              Conectá tu cuenta de Google para respaldar el plan y usarlo en otro dispositivo. Si ya
+              tenés un plan en la nube, se cargará al conectar; si no, se subirá el plan local.
+            </p>
+            {googleSyncError && <p className="settings-status settings-status-error">{googleSyncError}</p>}
+            <button type="button" className="secondary-button" onClick={connectGoogle}>
+              Conectar con Google
+            </button>
+          </>
+        )}
+      </section>
 
       <section className="settings-section">
         <h4>Exportar</h4>

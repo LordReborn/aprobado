@@ -1004,6 +1004,35 @@
   color: #111827;
 }
 
+.settings-inline-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.settings-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.settings-status {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.settings-status-error {
+  color: #b91c1c;
+}
+
+.settings-status-success {
+  color: #047857;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
