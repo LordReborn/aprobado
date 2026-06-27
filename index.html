@@ -22,6 +22,22 @@
     <link rel="author" href="https://www.jonasaguilar.com.ar" />
     <link rel="canonical" href="https://www.aprobado.com.ar/" />
     <title>Aprobado – Plan de cursada universitario</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Aprobado",
+        "description": "Aplicación web gratuita para estudiantes universitarios: mapa de correlativas, seguimiento de avance y respaldo opcional en Google Drive.",
+        "url": "https://www.aprobado.com.ar/",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "ARS"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root">
@@ -34,32 +50,13 @@
           correlativas en un mapa interactivo, marcar tu avance académico y,
           opcionalmente, respaldar tu plan en Google Drive.
         </p>
-        <ul>
-          <li>Mapa visual de materias y correlativas.</li>
-          <li>Seguimiento de avance académico.</li>
-          <li>Importación y edición del plan de estudios.</li>
-          <li>Sincronización opcional con Google Drive.</li>
-        </ul>
         <p>
-          <a href="/privacidad">Política de privacidad</a> ·
-          <a href="/terminos">Términos del servicio</a>
+          <a href="/acerca">Acerca de</a> ·
+          <a href="/privacidad">Privacidad</a> ·
+          <a href="/terminos">Términos</a>
         </p>
       </main>
     </div>
-    <footer class="app-signature">
-      Desarrollado por
-      <a
-        href="https://www.jonasaguilar.com.ar"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Jonas Aguilar
-      </a>
-      ·
-      <a href="/privacidad">Privacidad</a>
-      ·
-      <a href="/terminos">Términos</a>
-    </footer>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

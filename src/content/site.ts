@@ -9,7 +9,7 @@ export const LEGAL_LAST_UPDATED = "26 de junio de 2026";
 export const APP_DESCRIPTION =
   'Aprobado es una aplicación web gratuita para estudiantes universitarios. Te permite cargar tu plan de materias, visualizar correlativas en un mapa interactivo, marcar tu avance académico y, opcionalmente, respaldar tu plan en Google Drive.';
 
-/** Una línea visible en la home; suficiente para describir el propósito sin ocupar la pantalla. */
+/** @deprecated Usar APP_DESCRIPTION en la home. */
 export const APP_HOME_SUMMARY =
   'Visualizá correlativas, marcá tu avance y respaldá tu plan en Google Drive.';
 

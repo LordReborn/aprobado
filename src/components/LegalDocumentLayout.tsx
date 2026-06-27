@@ -40,6 +40,8 @@ export function LegalDocumentLayout({
         <article className="legal-content">{children}</article>
 
         <footer className="legal-footer">
+          <Link to={paths.about}>Acerca de {APP_NAME}</Link>
+          <span aria-hidden="true">·</span>
           <Link to={paths.privacy}>Política de privacidad</Link>
           <span aria-hidden="true">·</span>
           <Link to={paths.terms}>Términos del servicio</Link>

@@ -6,8 +6,9 @@ export const paths = {
   editorEdit: (id: string) => `/editor/editar/${encodeURIComponent(id)}`,
   editorImport: "/editor/importar",
   editorSettings: "/editor/configuracion",
-  privacy: "/privacidad",
-  terms: "/terminos",
+  privacy: '/privacidad',
+  terms: '/terminos',
+  about: '/acerca',
 } as const;
 
 export type EditorSection =

@@ -196,6 +196,31 @@
   color: #9ca3af;
 }
 
+.app-purpose-strip {
+  flex-shrink: 0;
+  padding: 0.65rem 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f8fafc;
+}
+
+.app-purpose-strip-text {
+  margin: 0;
+  max-width: 52rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.app-purpose-strip-link {
+  color: #2563eb;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.app-purpose-strip-link:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .map-page {
     flex-direction: column;
@@ -207,6 +232,14 @@
 
   .app-header-summary {
     display: none;
+  }
+
+  .app-purpose-strip {
+    padding: 0.55rem 0.75rem;
+  }
+
+  .app-purpose-strip-text {
+    font-size: 0.8rem;
   }
 
   .map-main {

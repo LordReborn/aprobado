@@ -12,14 +12,18 @@ import { MapPage } from "./pages/MapPage";
 import { EditorPage } from "./pages/EditorPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { TermsOfServicePage } from "./pages/TermsOfServicePage";
-import { APP_HOME_SUMMARY, APP_NAME, APP_TAGLINE } from './content/site';
-import { paths } from './routes/paths';
+import { AboutPage } from "./pages/AboutPage";
+import { AppSiteFooter } from "./components/AppSiteFooter";
+import { APP_NAME, APP_TAGLINE } from "./content/site";
+import { paths } from "./routes/paths";
 
 function AppLayout() {
   const location = useLocation();
   const isEditor = location.pathname.startsWith(paths.editor);
   const isLegalPage =
-    location.pathname === paths.privacy || location.pathname === paths.terms;
+    location.pathname === paths.privacy ||
+    location.pathname === paths.terms ||
+    location.pathname === paths.about;
   const isHomePage = location.pathname === paths.map;
 
   return (
@@ -31,12 +35,7 @@ function AppLayout() {
           ) : (
             <>
               <h1>{APP_NAME}</h1>
-              <p className="app-header-subtitle">
-                {APP_TAGLINE}
-                {isHomePage && (
-                  <span className="app-header-summary"> · {APP_HOME_SUMMARY}</span>
-                )}
-              </p>
+              <p className="app-header-subtitle">{APP_TAGLINE}</p>
             </>
           )}
         </div>
@@ -69,9 +68,12 @@ function AppLayout() {
           <Route path={`${paths.editor}/*`} element={<EditorPage />} />
           <Route path={paths.privacy} element={<PrivacyPolicyPage />} />
           <Route path={paths.terms} element={<TermsOfServicePage />} />
+          <Route path={paths.about} element={<AboutPage />} />
           <Route path="*" element={<Navigate to={paths.map} replace />} />
         </Routes>
       </main>
+
+      <AppSiteFooter />
     </div>
   );
 }
